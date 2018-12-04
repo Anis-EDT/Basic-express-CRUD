@@ -6,12 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 process.env.TZ = 'Africa/Tunis'
 var db= require('./models/dbconnect');
-var cors = require('cors');
-var fileUpload = require('express-fileupload');
 var app = express();
-var socket_io    = require( "socket.io" )(); //this is a modification
-app.io           = socket_io; //this is a modification
-global.io = socket_io;
 
 /*************** Routes Requirements *****************/
 var index = require('./routes/index');
@@ -35,14 +30,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(__dirname + '/public/media/users'));
-app.use(cors());
-app.use(fileUpload());
-app.io.on('connection', function(socket) {
-  console.log("listening to a client")
-  socket.on('disconnect', function() {
-    console.log("client disconnected")
-  });
-});
+
 /*************** Routes *****************/
 app.use('/', index);
 app.use('/users', users);
